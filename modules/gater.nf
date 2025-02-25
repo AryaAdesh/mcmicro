@@ -26,7 +26,9 @@ process GATER_PROCESS {
     script:
     """
     # Launch the gater web server.
+    docker run --rm -dp 8000:8000 \\
+    -v "$PWD":"$PWD" -w "$PWD" \\
+    aryaadesh/gater:1.1
     # Prevent process termination so the container stays alive.
-    tail -f /dev/null
     """
 }
