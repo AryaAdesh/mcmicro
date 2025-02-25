@@ -22,7 +22,6 @@ process gating {
         !params.skip_gater
     
     input:
-        // Use the quantification file as a dependency.
         path sft
 
     script:

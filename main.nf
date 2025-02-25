@@ -195,7 +195,7 @@ workflow {
     sft = quantification.out.mix(pre_qty)
     downstream(mcp, sft)
     //call gater
-    gating(sft)
+    gater(sft)
 
     // Vizualization
     viz(mcp, allimg, chMrk)
