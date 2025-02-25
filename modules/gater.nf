@@ -26,8 +26,6 @@ workflow gater {
         // Run GATER
         GATER_PROCESS(gater_input)
 
-    emit:
-        GATER_PROCESS.out into gater_out
 }
 
 
