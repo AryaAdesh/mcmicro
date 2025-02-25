@@ -26,7 +26,6 @@ process GATER_PROCESS {
     script:
     """
     # Launch the gater web server.
-    gater 
     # Prevent process termination so the container stays alive.
     tail -f /dev/null
     """
