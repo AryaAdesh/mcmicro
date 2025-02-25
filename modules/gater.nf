@@ -7,17 +7,23 @@ nextflow.enable.dsl=2
  */
 
 workflow gater {
+    take:
+        sft
     main:
-        // Directly run the GATER_PROCESS without processing upstream inputs.
-        GATER_PROCESS()
+        // Directly run the gating without processing upstream inputs.
+        gating(sft)
 }
 
-process GATER_PROCESS {
+process gating {
     // Output directory (if needed)
     publishDir path: "${params.outdir}/gater", mode: 'copy'
     
     when:
         !params.skip_gater
+    
+    input:
+        // Use the quantification file as a dependency.
+        path sft
 
     script:
     """
