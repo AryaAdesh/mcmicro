@@ -29,7 +29,7 @@ process gating {
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
     -v "$PWD":"$PWD" -w "$PWD" \\
-    aryaadesh/gater:1.1 & sleep 5 && xdg-open http://localhost:8000
+    aryaadesh/gater:1.1 & sleep 5 && open http://localhost:8000
     # Prevent process termination so the container stays alive.
     """
 }
