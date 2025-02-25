@@ -35,7 +35,7 @@ process GATER_PROCESS {
     tag { sample_id }
 
     // Use Gater container
-    container 'labsyspharm/gater:latest'
+    container 'aryaadesh/gater:1.0'
 
     // Output directory
     publishDir path: "${params.outdir}/gater", mode: 'copy'
