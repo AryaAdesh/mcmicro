@@ -15,7 +15,7 @@ workflow gater {
 process GATER_PROCESS {
     // Use Gater container and map port 8000.
     container 'aryaadesh/gater:1.0'
-    containerOptions '-p 8000:8000'
+    containerOptions '-p 8000:8000 -v "$PWD":"$PWD" -w "$PWD"'
     
     // Output directory (if needed)
     publishDir path: "${params.outdir}/gater", mode: 'copy'
@@ -26,8 +26,7 @@ process GATER_PROCESS {
     script:
     """
     # Launch the gater web server.
-    gater --out gater_output.csv &
-    echo "Gater web server running on port 8000. You can access it at http://localhost:8000"
+    gater 
     # Prevent process termination so the container stays alive.
     tail -f /dev/null
     """
