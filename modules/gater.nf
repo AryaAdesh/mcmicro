@@ -15,7 +15,7 @@ workflow gater {
 process GATER_PROCESS {
     // Use Gater container and map port 8000.
     container 'aryaadesh/gater:1.1'
-    containerOptions '-rm -dp 8000:8000 -v "$PWD":"$PWD" -w "$PWD"'
+    containerOptions '-p 8000:8000 -v "$PWD":"$PWD" -w "$PWD"'
     
     // Output directory (if needed)
     publishDir path: "${params.outdir}/gater", mode: 'copy'
