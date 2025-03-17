@@ -11,10 +11,10 @@ workflow gater {
         sft
     main:
         def regOutDir   = "${params.in}/registration"
-        // def segOutDir   = "${pubDir}/$tag"
+        def segOutDir   = "${pubDir}/$tag"
         def quantOutDir = "${params.in}/quantification"
         // Directly run the gating without processing upstream inputs.
-        gating(regOutDir, quantOutDir, sft)
+        gating(regOutDir, segOutDir, quantOutDir, sft)
 }
 
 process gating {
@@ -26,7 +26,7 @@ process gating {
     
     input:
         val regDir
-        // val segDir
+        val segDir
         val quantDir
         path sft
 
@@ -34,6 +34,7 @@ process gating {
     """
     echo "Registration files are in: $regDir"
     echo "Quantification files are in: $quantDir"
+    echo "Segmentation files are in: $segDir"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
     -v "$PWD":"$PWD" -w "$PWD" \\
