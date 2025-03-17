@@ -14,7 +14,7 @@ workflow gater {
         // def segOutDir   = "${pubDir}/$tag"
         def quantOutDir = "${params.in}/quantification"
         // Directly run the gating without processing upstream inputs.
-        gating(regOutDir, segOutDir, quantOutDir, sft)
+        gating(regOutDir, quantOutDir, sft)
 }
 
 process gating {
