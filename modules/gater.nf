@@ -32,7 +32,7 @@ process gating {
 
     script:
     """
-    echo "Registration path = \$regpath"
+    echo "Registration path = \$regPath"
     echo "quant path = \$quantPath"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
