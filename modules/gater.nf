@@ -15,7 +15,8 @@ workflow gater {
     main:
         def regOrigDir = "${params.in}/registration"
         def quantOrigDir = "${params.in}/quantification"
-        gating(allimg, segMsk, sft, regOrigDir, quantOrigDir)
+        def originalDir = "${params.in}"
+        gating(allimg, segMsk, sft, regOrigDir, quantOrigDir, originalDir)
 }
 
 process gating {
@@ -31,6 +32,7 @@ process gating {
         file sft
         val regOrigDir
         val quantOrigDir
+        val originalDir
 
     script:
     """
@@ -44,6 +46,7 @@ process gating {
       -e MC_MICRO="true" \\
       -e REG_PATH="\$regPath" \\
       -e CSV_PATH="\$quantPath" \\
+      -e ORIGINAL_DIR="${originalDir}" \\
       -v "$PWD":"$PWD" -v "$PWD/gater":/gater -w "$PWD" \\
       aryaadesh/gater:1.1 &
 
@@ -60,12 +63,5 @@ process gating {
         echo "Please open http://localhost:8000 manually in your browser."
     fi
 
-    # Wait until the gated CSV file is produced
-    while [ ! -f gater/gated.csv ]; do
-        echo "Waiting for gated CSV to be produced..."
-        sleep 5
-    done
-
-    echo "Gated CSV found. Exiting process."
     """
 }
