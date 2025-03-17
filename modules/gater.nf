@@ -38,11 +38,34 @@ process gating {
     quantPath="${quantOrigDir}/\$(basename ${sft})"
     
     echo "Registration full path: \$regPath"
-    echo "Quantification full path: \$quantPath"}"
+    echo "Quantification full path: \$quantPath"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
-    -v "$PWD":"$PWD" -w "$PWD" \\
-    aryaadesh/gater:1.1 & sleep 5 && open http://localhost:8000
-    # Prevent process termination so the container stays alive.
+      -e MC_MICRO="true" \\
+      -e REG_PATH="\$regPath" \\
+      -e CSV_PATH="\$quantPath" \\
+      -v "$PWD":"$PWD" -v "$PWD/gater":/gater -w "$PWD" \\
+      aryaadesh/gater:1.1 &
+
+    sleep 5
+
+    # Cross-platform URL open command
+    if [[ "\$OSTYPE" == "darwin"* ]]; then
+        open http://localhost:8000
+    elif [[ "\$OSTYPE" == "linux-gnu"* ]]; then
+        xdg-open http://localhost:8000
+    elif [[ "\$OSTYPE" == "msys" ]] || [[ "\$OSTYPE" == "cygwin" ]]; then
+        start http://localhost:8000
+    else
+        echo "Please open http://localhost:8000 manually in your browser."
+    fi
+
+    # Wait until the gated CSV file is produced
+    while [ ! -f gater/gated.csv ]; do
+        echo "Waiting for gated CSV to be produced..."
+        sleep 5
+    done
+
+    echo "Gated CSV found. Exiting process."
     """
 }
