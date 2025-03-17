@@ -36,7 +36,7 @@ process gating {
     """
     # Extract directory and file name for registration output
     reg_dir=\$(dirname ${allimg.parent})
-    reg_name=\$(basename ${regFile})
+    reg_name=\$(basename ${allimg})
 
     # Extract directory and file name for segmentation output
     seg_dir=\$(dirname ${segMsk.parent})
