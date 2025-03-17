@@ -13,12 +13,11 @@ workflow gater {
         sft
 
     main:
-        def regFileWithDir = allimg.map { file -> tuple(file, file.parent) }
         // def regOutDir   = "${params.in}/registration"
         // def segOutDir   = "${pubDir}/$tag"
         // def quantOutDir = "${params.in}/quantification"
         // Directly run the gating without processing upstream inputs.
-        gating(allimg, segMsk, sft, regFileWithDir)
+        gating(allimg, segMsk, sft)
 }
 
 process gating {
@@ -32,25 +31,24 @@ process gating {
         file allimg
         file segMsk
         file sft
-        tuple file(regFile), val origRegDir from regFileWithDir
 
     script:
     """
     # Extract directory and file name for registration output
-    reg_dir=\$(dirname ${origRegDir})
+    reg_dir=\$(dirname ${allimg.parent})
     reg_name=\$(basename ${regFile})
 
     # Extract directory and file name for segmentation output
-    seg_dir=\$(dirname ${segMsk})
+    seg_dir=\$(dirname ${segMsk.parent})
     seg_name=\$(basename ${segMsk})
 
     # Extract directory and file name for quantification output
-    quant_dir=\$(dirname ${sft})
+    quant_dir=\$(dirname ${sft.parent})
     quant_name=\$(basename ${sft})
 
-    echo "Registration: Directory = \$reg_dir, File = \$reg_name"
-    echo "Segmentation: Directory = \$seg_dir, File = \$seg_name"
-    echo "Quantification: Directory = \$quant_dir, File = \$quant_name"
+    echo "Registration: Dir = \$reg_dir, File = \$reg_name"
+    echo "Segmentation: Dir = \$seg_dir, File = \$seg_name"
+    echo "Quantification: Dir = \$quant_dir, File = \$quant_name"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
     -v "$PWD":"$PWD" -w "$PWD" \\
