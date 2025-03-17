@@ -13,12 +13,12 @@ workflow gater {
         sft
 
     main:
-        def origRegDir = allimg.getParent()
+        def regFileWithDir = allimg.map { file -> tuple(file, file.parent) }
         // def regOutDir   = "${params.in}/registration"
         // def segOutDir   = "${pubDir}/$tag"
         // def quantOutDir = "${params.in}/quantification"
         // Directly run the gating without processing upstream inputs.
-        gating(allimg, segMsk, sft, origRegDir)
+        gating(allimg, segMsk, sft, regFileWithDir)
 }
 
 process gating {
@@ -32,13 +32,13 @@ process gating {
         file allimg
         file segMsk
         file sft
-        val origRegDir
+        tuple file(regFile), val origRegDir from regFileWithDir
 
     script:
     """
     # Extract directory and file name for registration output
     reg_dir=\$(dirname ${origRegDir})
-    reg_name=\$(basename ${allimg})
+    reg_name=\$(basename ${regFile})
 
     # Extract directory and file name for segmentation output
     seg_dir=\$(dirname ${segMsk})
