@@ -13,7 +13,9 @@ workflow gater {
         sft
 
     main:
-        gating(allimg, segMsk, sft)
+        def regOrigDir = "${params.in}/registration"
+        def quantOrigDir = "${params.in}/quantification"
+        gating(allimg, segMsk, sft, regOrigDir, quantOrigDir)
 }
 
 process gating {
@@ -27,8 +29,8 @@ process gating {
         file allimg
         file segMsk
         file sft
-        val regOrigDir from "${params.in}/registration"
-        val quantOrigDir from "${params.in}/quantification"
+        val regOrigDir
+        val quantOrigDir
 
     script:
     """
