@@ -13,7 +13,7 @@ workflow gater {
         sft
 
     main:
-        gating(allimg, segMsk sft)
+        gating(allimg, segMsk, sft)
 }
 
 process gating {
