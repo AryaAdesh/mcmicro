@@ -13,10 +13,7 @@ workflow gater {
         sft
 
     main:
-        def regPath = "${params.in}/registration/${allimg.name}"
-        // def segPath = "($params.in)/segmentation" + ${segMsk}.name
-        def quantPath = "${params.in}/quantification/${sft.name}"
-        gating(regPath, quantPath)
+        gating(allimg, segMsk sft)
 }
 
 process gating {
@@ -27,13 +24,19 @@ process gating {
         !params.skip_gater
     
     input:
-        val regPath
-        val quantPath
+        file allimg
+        file segMsk
+        file sft
+        val regOrigDir from "${params.in}/registration"
+        val quantOrigDir from "${params.in}/quantification"
 
     script:
     """
-    echo "Registration path = ${regPath}"
-    echo "quant path = ${quantPath}"
+    regPath="${regOrigDir}/\$(basename ${allimg})"
+    quantPath="${quantOrigDir}/\$(basename ${sft})"
+    
+    echo "Registration full path: \$regPath"
+    echo "Quantification full path: \$quantPath"}"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
     -v "$PWD":"$PWD" -w "$PWD" \\
