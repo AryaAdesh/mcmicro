@@ -13,11 +13,10 @@ workflow gater {
         sft
 
     main:
-        // def regOutDir   = "${params.in}/registration"
-        // def segOutDir   = "${pubDir}/$tag"
-        // def quantOutDir = "${params.in}/quantification"
-        // Directly run the gating without processing upstream inputs.
-        gating(allimg, segMsk, sft)
+        def regPath = "($params.in)/registration/" + ${allimg}.name
+        // def segPath = "($params.in)/segmentation" + ${segMsk}.name
+        def quantPath = "($params.in)/quantification/" + ${sft}.name
+        gating(regPath, quantPath)
 }
 
 process gating {
@@ -28,27 +27,13 @@ process gating {
         !params.skip_gater
     
     input:
-        file allimg
-        file segMsk
-        file sft
+        val regPath
+        val quantPath
 
     script:
     """
-    # Extract directory and file name for registration output
-    reg_dir=\$(dirname ${allimg.parent})
-    reg_name=\$(basename ${allimg})
-
-    # Extract directory and file name for segmentation output
-    seg_dir=\$(dirname ${segMsk.parent})
-    seg_name=\$(basename ${segMsk})
-
-    # Extract directory and file name for quantification output
-    quant_dir=\$(dirname ${sft.parent})
-    quant_name=\$(basename ${sft})
-
-    echo "Registration: Dir = \$reg_dir, File = \$reg_name"
-    echo "Segmentation: Dir = \$seg_dir, File = \$seg_name"
-    echo "Quantification: Dir = \$quant_dir, File = \$quant_name"
+    echo "Registration path = \$regpath"
+    echo "quant path = \$quantPath"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
     -v "$PWD":"$PWD" -w "$PWD" \\
