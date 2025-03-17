@@ -13,9 +13,9 @@ workflow gater {
         sft
 
     main:
-        def regPath = "($params.in)/registration/" + ${allimg}.name
+        def regPath = "($params.in)/registration/${allimg}.name"
         // def segPath = "($params.in)/segmentation" + ${segMsk}.name
-        def quantPath = "($params.in)/quantification/" + ${sft}.name
+        def quantPath = "($params.in)/quantification/${sft}.name"
         gating(regPath, quantPath)
 }
 
