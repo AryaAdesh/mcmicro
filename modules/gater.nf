@@ -13,9 +13,9 @@ workflow gater {
         sft
 
     main:
-        def regPath = "($params.in)/registration/${allimg}.name"
+        def regPath = "${params.in}/registration/${allimg.name}"
         // def segPath = "($params.in)/segmentation" + ${segMsk}.name
-        def quantPath = "($params.in)/quantification/${sft}.name"
+        def quantPath = "${params.in}/quantification/${sft.name}"
         gating(regPath, quantPath)
 }
 
@@ -32,8 +32,8 @@ process gating {
 
     script:
     """
-    echo "Registration path = \$regPath"
-    echo "quant path = \$quantPath"
+    echo "Registration path = ${regPath}"
+    echo "quant path = ${quantPath}"
     # Launch the gater web server.
     docker run --rm -dp 8000:8000 \\
     -v "$PWD":"$PWD" -w "$PWD" \\
