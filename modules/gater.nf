@@ -54,13 +54,13 @@ process gating {
 
     # Cross-platform URL open command
     if [[ "\$OSTYPE" == "darwin"* ]]; then
-        open http://localhost:8000
+        open http://localhost:8000/upload_page
     elif [[ "\$OSTYPE" == "linux-gnu"* ]]; then
-        xdg-open http://localhost:8000
+        xdg-open http://localhost:8000/upload_page
     elif [[ "\$OSTYPE" == "msys" ]] || [[ "\$OSTYPE" == "cygwin" ]]; then
-        start http://localhost:8000
+        start http://localhost:8000/upload_page
     else
-        echo "Please open http://localhost:8000 manually in your browser."
+        echo "Please open http://localhost:8000/upload_page manually in your browser."
     fi
 
     """
