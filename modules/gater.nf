@@ -48,7 +48,7 @@ process gating {
       -e CSV_PATH="\$quantPath" \\
       -e ORIGINAL_DIR="${originalDir}" \\
       -v "$PWD":"$PWD" -v "$PWD/gater":/gater -w "$PWD" \\
-      aryaadesh/gater:1.1 &
+      aryaadesh/gater:1.2 &
 
     sleep 5
 
